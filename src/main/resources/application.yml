@@ -1,0 +1,17 @@
+server:
+  port: 1227
+  servlet:
+    context-path: /gbo
+
+spring:
+  profiles:
+    active: prod #对应不同的环境
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://www.mrsun.club:3306/micro_db
+    username: root
+    password: YANGbo!@#$1234
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
