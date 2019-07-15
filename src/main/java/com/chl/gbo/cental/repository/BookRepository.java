@@ -1,4 +1,4 @@
-package com.chl.gbo.cental.service;
+package com.chl.gbo.cental.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;

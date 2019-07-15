@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 /**
  * @Auther: BoYanG
  * @Describe test
- * @Date 2019/6/12 15:15
  */
 @Component
 @ConfigurationProperties(prefix = "me")
