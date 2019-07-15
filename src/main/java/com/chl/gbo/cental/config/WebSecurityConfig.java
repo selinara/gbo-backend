@@ -6,9 +6,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,11 +19,16 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.SpringSecurityMessageSource;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.thymeleaf.util.StringUtils;
+
 import com.chl.gbo.cental.component.AccessDecisionManagerImpl;
 import com.chl.gbo.cental.component.FilterInvocationSecurityMetadataSourceImpl;
 import com.chl.gbo.cental.component.MyAccessDeniedHandler;
@@ -63,13 +70,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery(query).authoritiesByUsernameQuery(query);
 
         //注入userDetailsService，需要实现userDetailsService接口
-        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+        auth.authenticationProvider(this.daoAuthenticationProvider());
+//        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder(4));
     }
 
     //在这里配置哪些页面不需要认证
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/", "/login.do","/goindex.do","/logout.do","/bookmall.htm");
+        web.ignoring().antMatchers("/", "/noAuthenticate");
     }
 
     /**定义安全策略*/
@@ -87,50 +95,81 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/hello").hasAuthority("ADMIN")
                 .and()
                 .formLogin()
-                .loginPage("/login.do")
+                .loginPage("/login")
+                .defaultSuccessUrl("/index").failureUrl("/login?error")
                 .usernameParameter("username")
                 .passwordParameter("password")
                 .permitAll()
-                .failureHandler(new AuthenticationFailureHandler() {
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-                        StringBuffer sb = new StringBuffer();
-                        sb.append("{\"status\":\"error\",\"msg\":\"");
-                        if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
-                            sb.append("用户名或密码输入错误，登录失败!");
-                        } else if (e instanceof DisabledException) {
-                            sb.append("账户被禁用，登录失败，请联系管理员!");
-                        } else {
-                            sb.append("登录失败!");
-                        }
-                        sb.append("\"}");
-                        out.write(sb.toString());
-                        out.flush();
-                        out.close();
-                    }
-                })
-                .successHandler(new AuthenticationSuccessHandler() {
-                    @Override
-                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                        httpServletResponse.setContentType("application/json;charset=utf-8");
-                        PrintWriter out = httpServletResponse.getWriter();
-//                        ObjectMapper objectMapper = new ObjectMapper();
-                        String s = "{\"status\":\"success\",\"msg\":"  + "}";
-                        out.write(s);
-                        out.flush();
-                        out.close();
-                    }
-                })
+//                .failureHandler(new AuthenticationFailureHandler() {
+//                    @Override
+//                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
+//                        httpServletResponse.setContentType("application/json;charset=utf-8");
+//                        PrintWriter out = httpServletResponse.getWriter();
+//                        StringBuffer sb = new StringBuffer();
+//                        sb.append("{\"status\":\"error\",\"msg\":\"");
+//                        if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
+//                            sb.append("用户名或密码输入错误，登录失败!");
+//                        } else if (e instanceof DisabledException) {
+//                            sb.append("账户被禁用，登录失败，请联系管理员!");
+//                        } else {
+//                            sb.append("登录失败!");
+//                        }
+//                        sb.append("\"}");
+//                        out.write(sb.toString());
+//                        out.flush();
+//                        out.close();
+//                    }
+//                })
+
+
+//                .successHandler(new AuthenticationSuccessHandler() {
+//                    @Override
+//                    public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
+//                        httpServletResponse.setContentType("application/json;charset=utf-8");
+//                        PrintWriter out = httpServletResponse.getWriter();
+////                        ObjectMapper objectMapper = new ObjectMapper();
+//                        String s = "{\"status\":\"success\",\"msg\":"  + "\"登录成功\"}";
+//                        out.write(s);
+//                        out.flush();
+//                        out.close();
+//                    }
+//                })
                 .and()
-                .logout()
+                .logout().logoutUrl("/logout")
                 .permitAll()
                 .and()
                 .csrf()
                 .disable()
-                .exceptionHandling()
-                .accessDeniedHandler(myAccessDeniedHandler);
+                .exceptionHandling().accessDeniedPage("/error");
+//                .accessDeniedHandler(myAccessDeniedHandler);
     }
 
+    /**
+     * 构建自定义的DaoAuthenticationProvider
+     * @return
+     */
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider bean = new DaoAuthenticationProvider();
+        bean.setHideUserNotFoundExceptions(false);
+        bean.setUserDetailsService(this.userService);
+        bean.setPasswordEncoder(new BCryptPasswordEncoder(4) {
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                if (StringUtils.isEmpty(rawPassword.toString())) {
+                    throw new BadCredentialsException("没有提供密码");
+                } else if (StringUtils.isEmpty(encodedPassword)) {
+                    throw new BadCredentialsException("系统中密码密文是空白字符串");
+                } else {
+                    if (!BCrypt.checkpw(rawPassword.toString(), encodedPassword)) {
+                        throw new BadCredentialsException("用户名或密码错误");
+                    }
+                    return true;
+                }
+            }
+
+        });
+        return bean;
+    }
 }

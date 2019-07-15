@@ -32,7 +32,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
         log.info("requestUrl:" + url);
 
         //无需权限
-        if (url.contains("login") || url.contains("goindex") || url.contains("logout") || url.contains("bookmall")) {
+        if (url.contains("/login")) {
             return null;
         }
 

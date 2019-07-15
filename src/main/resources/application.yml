@@ -11,6 +11,12 @@ spring:
     url: jdbc:mariadb://www.mrsun.club:3306/micro_db
     username: root
     password: YANGbo!@#$1234
+    type: com.alibaba.druid.pool.DruidDataSource
+    dbcp2:
+      max-wait-millis: 10000
+      min-idle: 5
+      initial-size: 5
+      validation-query: SELECT 1
   thymeleaf:
       prefix: classpath:/templates/  #指定模板所在的目录
       check-template-location: true  #检查模板路径是否存在
@@ -26,6 +32,9 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true
+  messages:
+    encoding: UTF-8
+    basename: messages
 
 logging:
   config: classpath:log4j2-log.xml

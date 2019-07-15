@@ -42,7 +42,7 @@ public class UserService implements UserDetailsService {
     //根据用户名 返回一个UserDetails的实现类的实例
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info(String.format("find user by username,username=", username));
+        log.info(String.format("find user by username,username=%s", username));
         List<User> users = findUserByUsername(username);
         if (users==null || users.size() == 0) {
             throw new UsernameNotFoundException("Not Exist User");

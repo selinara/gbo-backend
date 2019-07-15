@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Auther: BoYanG
- * @Describe 自定义403响应
+ * @Describe 自定义403响应，自定义权限不足的操作
  */
 @Component
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
@@ -22,6 +22,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
         response.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json;charset=utf-8");
         PrintWriter out = response.getWriter();
         out.write("{\"status\":\"error\",\"msg\":\"权限不足，请联系管理员!\"}");
         out.flush();
