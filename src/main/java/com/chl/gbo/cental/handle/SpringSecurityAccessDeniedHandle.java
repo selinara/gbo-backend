@@ -1,4 +1,4 @@
-package com.chl.gbo.cental.component;
+package com.chl.gbo.cental.handle;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 
 /**
  * @Auther: BoYanG
- * @Describe 自定义403响应，自定义权限不足的操作
+ * @Describe SpringSecurity 登录自定义403
  */
 @Component
-public class MyAccessDeniedHandler implements AccessDeniedHandler {
+public class SpringSecurityAccessDeniedHandle implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
@@ -27,5 +27,6 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler {
         out.write("{\"status\":\"error\",\"msg\":\"权限不足，请联系管理员!\"}");
         out.flush();
         out.close();
+
     }
 }

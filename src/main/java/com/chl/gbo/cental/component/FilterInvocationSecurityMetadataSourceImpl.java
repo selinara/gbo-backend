@@ -29,6 +29,7 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
     @Override
     public Collection<ConfigAttribute> getAttributes(Object o) throws IllegalArgumentException {
         String url = ((FilterInvocation) o).getRequestUrl();
+
         log.info("requestUrl:" + url);
 
         //无需权限
