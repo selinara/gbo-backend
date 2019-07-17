@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.thymeleaf.util.StringUtils;
 
 import com.chl.gbo.cental.component.AccessDecisionManagerImpl;
@@ -75,8 +76,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     //在这里配置哪些页面不需要认证，添加在此处的URL直接走控制器，不走授权认证！！！
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/", "/noAuthenticate");
+        web.ignoring().antMatchers("/", "/static/**");
     }
+
+
 
     /**定义安全策略*/
     @Override
@@ -101,12 +104,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .failureHandler(springSecurityFailureHandle)
 //                .successHandler(springSecuritySuccessHandle)
                 .and()
+                .headers().frameOptions().disable()
+                .and()
                 .logout().logoutUrl("/logout")
                 .permitAll()
                 .and()
                 .csrf()
                 .disable()
-                .exceptionHandling().accessDeniedPage("/error");
+                .exceptionHandling().accessDeniedPage("/no/permission");
 //                .accessDeniedHandler(myAccessDeniedHandler);
     }
 

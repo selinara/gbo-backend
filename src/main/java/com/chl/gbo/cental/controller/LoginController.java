@@ -1,20 +1,15 @@
 package com.chl.gbo.cental.controller;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * @Auther: BoYanG
- * @Describe 登录
+ * @Describe 登录-首页
  */
 @Controller
 public class LoginController {
@@ -23,12 +18,14 @@ public class LoginController {
 
     @GetMapping(value = "/login")
     public String login(){
+        logger.info("=====================login==============");
         return "login";
     }
 
-    @PostMapping(value = "/login")
-    public String login2(){
-        return "login";
+    @GetMapping(value = "/home")
+    public String homePage(){
+        logger.info("=====================home==============");
+        return "home_page";
     }
 
     @RequestMapping(value = "/index")
@@ -37,9 +34,9 @@ public class LoginController {
         return "index";
     }
 
-    @GetMapping(value = "/error")
+    @GetMapping(value = "/no/permission")
     public String error(){
-        return "error";
+        return "no_permission";
     }
 
     @GetMapping(value = "/logout")

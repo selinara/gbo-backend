@@ -7,10 +7,10 @@ spring:
   profiles:
     active: prod #对应不同的环境
   datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://www.mrsun.club:3306/micro_db
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://www.yangshuqian.com:3306/shuqian_db
     username: root
-    password: YANGbo!@#$1234
+    password: root
     type: com.alibaba.druid.pool.DruidDataSource
     dbcp2:
       max-wait-millis: 10000
