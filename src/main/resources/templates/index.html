@@ -17,7 +17,7 @@
                                 <span class="clear">
                                     <span class="block m-t-xs" style="font-size:20px;">
                                         <i class="fa fa-area-chart"></i>
-                                        <strong class="font-bold">QianShu</strong>
+                                        <strong class="font-bold" th:text="${currentUser}"></strong>
                                     </span>
                                 </span>
                             </a>
@@ -432,6 +432,11 @@
                                     </div>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" th:href="@{/logout}">
+                                <i class="fa fa-sign-out"></i>
+                            </a>
                         </li>
                     </ul>
                 </nav>

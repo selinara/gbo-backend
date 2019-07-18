@@ -1,24 +1,16 @@
 package com.chl.gbo.cental.controller;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import com.chl.gbo.cental.domain.Role;
 import com.chl.gbo.cental.domain.User;
-import com.chl.gbo.cental.repository.RoleRepository;
-import com.chl.gbo.cental.repository.UserRepository;
 import com.chl.gbo.cental.service.RoleService;
 import com.chl.gbo.cental.service.UserService;
-import com.google.common.collect.Maps;
 
 /**
  * @Auther: BoYanG
@@ -41,13 +33,30 @@ public class SystemController {
         return "/system/system_user";
     }
 
+    @GetMapping("/user/add")
+    public String userEdit(Model model){
+        model.addAttribute("roles", roleService.findCurrentUserCheckRoleList(null));
+        model.addAttribute("tip", "ADD");
+        return "/system/system_user_aded";
+    }
+
     @GetMapping("/user/edit")
     public String userEdit(String ud, String un, String ids, Model model){
         model.addAttribute("ud", ud);
         model.addAttribute("un", un);
         model.addAttribute("roles", roleService.findCurrentUserCheckRoleList(ids));
+        model.addAttribute("tip", "EDIT");
         return "/system/system_user_aded";
     }
+
+    @PostMapping("/user/submit")
+    public String userSubmit(User user){
+        userService.insertUser(user);
+        return "redirect:/system/user";
+    }
+
+
+
 
     @GetMapping("/role")
     public String systemRolePage(){

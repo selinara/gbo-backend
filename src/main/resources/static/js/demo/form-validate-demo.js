@@ -25,39 +25,39 @@
             var icon = "<i class='fa fa-times-circle'></i> ";
             $("#signupForm").validate({
                 rules: {
-                    firstname: "required",
-                    lastname: "required",
-                    username: {
+                    // firstname: "required",
+                    // lastname: "required",
+                    loginAccount: {
                         required: true,
                         minlength: 2
                     },
-                    password: {
+                    loginPass: {
                         required: true,
                         minlength: 5
                     },
                     confirm_password: {
                         required: true,
                         minlength: 5,
-                        equalTo: "#password"
+                        equalTo: "#loginPass"
                     },
-                    email: {
-                        required: true,
-                        email: true
-                    },
-                    topic: {
-                        required: "#newsletter:checked",
-                        minlength: 2
-                    },
-                    agree: "required"
+                    // email: {
+                    //     required: true,
+                    //     email: true
+                    // },
+                    // topic: {
+                    //     required: "#newsletter:checked",
+                    //     minlength: 2
+                    // },
+                    // agree: "required"
                 },
                 messages: {
-                    firstname: icon + "请输入你的姓",
-                    lastname: icon + "请输入您的名字",
-                    username: {
+                    // firstname: icon + "请输入你的姓",
+                    // lastname: icon + "请输入您的名字",
+                    loginAccount: {
                         required: icon + "请输入您的用户名",
                         minlength: icon + "用户名必须两个字符以上"
                     },
-                    password: {
+                    loginPass: {
                         required: icon + "请输入您的密码",
                         minlength: icon + "密码必须5个字符以上"
                     },
@@ -65,21 +65,22 @@
                         required: icon + "请再次输入密码",
                         minlength: icon + "密码必须5个字符以上",
                         equalTo: icon + "两次输入的密码不一致"
-                    },
-                    email: icon + "请输入您的E-mail",
-                    agree: {
-                        required: icon + "必须同意协议后才能注册",
-                        element: '#agree-error'
                     }
+                    // email: icon + "请输入您的E-mail",
+                    // agree: {
+                    //     required: icon + "必须同意协议后才能注册",
+                    //     element: '#agree-error'
+                    // }
                 }
             });
 
             // propose username by combining first- and lastname
-            $("#username").focus(function () {
-                var firstname = $("#firstname").val();
-                var lastname = $("#lastname").val();
-                if (firstname && lastname && !this.value) {
-                    this.value = firstname + "." + lastname;
-                }
-            });
+            // $("#loginAccount").focus(function () {
+            //     var firstname = $("#firstname").val();
+            //     var lastname = $("#lastname").val();
+            //     if (firstname && lastname && !this.value) {
+            //         this.value = firstname + "." + lastname;
+            //     }
+            // });
+
         });

@@ -29,5 +29,5 @@ public class Role {
     private Integer companyId;
 
     @Transient
-    private Boolean isCheck;
+    private Boolean isCheck = false;
 }

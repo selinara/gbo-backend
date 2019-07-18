@@ -3,7 +3,9 @@ package com.chl.gbo.cental.controller;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,8 +31,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/index")
-    public String index(HttpServletRequest request){
-        logger.info("index parameter" + request.getParameter("username"));
+    public String index(Model model,Authentication authentication){
+        logger.info(authentication.getName()+" has login backend!!!!");
+        model.addAttribute("currentUser", authentication.getName());
         return "index";
     }
 

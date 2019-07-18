@@ -9,10 +9,14 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.util.StringUtils;
+
 import com.chl.gbo.cental.bean.UserDetailsDto;
 import com.chl.gbo.cental.domain.Role;
 import com.chl.gbo.cental.domain.User;
 import com.chl.gbo.cental.repository.UserRepository;
+import com.chl.gbo.util.BCryptUtil;
+import com.chl.gbo.util.DateUtil;
 
 /**
  * @Auther: BoYanG
@@ -51,5 +55,24 @@ public class UserService implements UserDetailsService {
         User user = users.get(0);
         // 封装成UserDetails返回
         return new UserDetailsDto(user, roleService.getRolesByUserName(user.getLoginAccount()));
+    }
+
+    @Transactional
+    public void insertUser(User user) {
+        if (user.getUserId() != null) {
+            userRepository.deleteUserRole(user.getUserId());
+        }
+
+        //user
+        user.setLoginPass(BCryptUtil.encode(user.getLoginPass()));
+        user.setRegisterTime(DateUtil.now());
+        userRepository.save(user);
+
+        //user-role
+        String roleIds = user.getRoleIds();
+        String[] ids = roleIds.split(",");
+        for (String id : ids) {
+            userRepository.addUserRole(user.getUserId(), Integer.parseInt(id));
+        }
     }
 }
