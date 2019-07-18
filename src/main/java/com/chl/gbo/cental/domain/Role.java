@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,4 +27,7 @@ public class Role {
     private String description;
     private String roleValue;
     private Integer companyId;
+
+    @Transient
+    private Boolean isCheck;
 }

@@ -1,10 +1,12 @@
 package com.chl.gbo.cental.domain;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -30,4 +32,7 @@ public class User {
     private String userBirthday;
     private String registerTime;
     private String departmentKey;
+
+    private String roleIds;
+    private String roleNames;
 }

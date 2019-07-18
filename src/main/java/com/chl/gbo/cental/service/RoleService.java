@@ -24,4 +24,17 @@ public class RoleService {
         return roleRepository.getAuthoritysByMenuCode(menuCode);
     }
 
+    public List<Role> findCurrentUserCheckRoleList(String ids) {
+        String[] idArr = ids.split(",");
+        List<Role> roleList = roleRepository.findAll();
+        for (Role role : roleList) {
+            for (String id : idArr) {
+                if (id.equals(String.valueOf(role.getRoleId()))) {
+                    role.setIsCheck(true);
+                    break;
+                }
+            }
+        }
+        return roleList;
+    }
 }

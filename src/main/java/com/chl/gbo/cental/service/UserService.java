@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.chl.gbo.cental.bean.UserDetailsDto;
+import com.chl.gbo.cental.domain.Role;
 import com.chl.gbo.cental.domain.User;
 import com.chl.gbo.cental.repository.UserRepository;
 
@@ -31,7 +32,7 @@ public class UserService implements UserDetailsService {
 
     @Transactional
     public List<User> findAllUsers(){
-        return userRepository.findAll();
+        return userRepository.findAllUsersAndAuthority();
     }
 
     @Transactional

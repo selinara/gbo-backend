@@ -8,7 +8,7 @@ spring:
     active: prod #对应不同的环境
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://www.yangshuqian.com:3306/shuqian_db
+    url: jdbc:mysql://www.yangshuqian.com:3306/shuqian_db?serverTimezone=UTC&characterEncoding=utf-8
     username: root
     password: root
     type: com.alibaba.druid.pool.DruidDataSource
