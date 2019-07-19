@@ -1,41 +1,35 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:include="/common/common_head :: commonHeader('用户编辑')"></head>
+<head th:include="/common/common_head :: commonHeader('权限设置')"></head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-sm-6">
             <div class="ibox float-e-margins">
                 <div class="ibox-content">
-                    <label th:text="${tip}"></label>
-                    <form class="form-horizontal m-t" id="signupForm" th:action="@{/system/user/submit}" method="post">
-                        <input type="hidden" name="userId" th:value="${ud}">
+                    <label>权限设置</label>
+                    <form class="form-horizontal m-t" id="signupForm" th:action="@{/system/role/authsubmit}" method="post">
+                        <input type="hidden" name="roleId" th:value="${rid}">
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">用户名：</label>
+                            <label class="col-sm-3 control-label">角色编码：</label>
                             <div class="col-sm-8">
-                                <input id="loginAccount" name="loginAccount" th:value="${un}" class="form-control" type="text" aria-required="true" aria-invalid="true">
+                                <input id="roleKey" name="roleKey" th:value="${key}" class="form-control" readonly type="text" aria-required="true" aria-invalid="true">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">密码：</label>
+                            <label class="col-sm-3 control-label">角色名称：</label>
                             <div class="col-sm-8">
-                                <input id="loginPass" name="loginPass" class="form-control" type="password">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">确认密码：</label>
-                            <div class="col-sm-8">
-                                <input id="confirm_password" name="confirm_password" class="form-control" type="password">
-                                <span class="help-block m-b-none"><i class="fa fa-info-circle"></i> 请再次输入您的密码</span>
+                                <input id="roleValue" name="roleValue" th:value="${val}" class="form-control" readonly type="text" aria-required="true" aria-invalid="true">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3 control-label">权限设置：</label>
                             <div class="col-sm-8">
                                 <div>
-                                    <div class="checkbox checkbox-info" th:each="role : ${roles}">
-                                        <input th:id="${role.roleId}" name="roleIds" id="roleIds" type="checkbox" th:value="${role.roleId}" th:checked="${role.isCheck}">
-                                        <label th:for="${role.roleId}" th:text="${role.roleKey}"></label>
+                                    <div class="checkbox checkbox-info" th:each="authRole : ${authPageList}">
+                                        <input th:id="${authRole.menuCode}" name="menuCode" id="menuCode" type="checkbox" th:value="${authRole.menuCode}" th:checked="${authRole.isHasAuth}">
+                                        <label th:for="${authRole.menuCode}" th:text="${authRole.menuName}"></label>
+                                        <span th:style="${authRole.menuType=='1'?'color: #00b7ee':'color: #8a1f11'}"><strong th:text="${authRole.menuType=='1'?'页面':'按钮'}"></strong></span>
                                     </div>
                                 </div>
                             </div>

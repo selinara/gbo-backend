@@ -32,8 +32,12 @@ public class FilterInvocationSecurityMetadataSourceImpl implements FilterInvocat
 
         log.info("requestUrl:" + url);
 
+        if (url.contains("?")) {
+            url = url.substring(0, url.indexOf("?"));
+        }
+
         //无需权限
-        if (url.contains("/login")) {
+        if (url.contains("/login") || url.contains("/error")) {
             return null;
         }
 

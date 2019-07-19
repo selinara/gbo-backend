@@ -10,9 +10,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.util.StringUtils;
-
 import com.chl.gbo.cental.bean.UserDetailsDto;
-import com.chl.gbo.cental.domain.Role;
 import com.chl.gbo.cental.domain.User;
 import com.chl.gbo.cental.repository.UserRepository;
 import com.chl.gbo.util.BCryptUtil;
@@ -35,8 +33,13 @@ public class UserService implements UserDetailsService {
     private RoleService roleService;
 
     @Transactional
-    public List<User> findAllUsers(){
-        return userRepository.findAllUsersAndAuthority();
+    public List<User> findAllUsers(String loginAccount){
+        if (StringUtils.isEmpty(loginAccount)){
+            loginAccount="";
+        } else {
+            loginAccount = "%"+loginAccount+"%";
+        }
+        return userRepository.findAllUsersAndAuthority(loginAccount);
     }
 
     @Transactional
@@ -75,4 +78,18 @@ public class UserService implements UserDetailsService {
             userRepository.addUserRole(user.getUserId(), Integer.parseInt(id));
         }
     }
+
+    @Transactional
+    public void deleteUserInfoByUd(String ud) {
+        if (StringUtils.isEmpty(ud)) {
+            return;
+        }
+
+        //user-role
+        userRepository.deleteUserRole(Integer.parseInt(ud));
+
+        //user
+        userRepository.deleteById(Integer.parseInt(ud));
+    }
+
 }

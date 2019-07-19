@@ -38,14 +38,18 @@ public class LoginController {
     }
 
     @GetMapping(value = "/no/permission")
-    public String error(){
+    public String nopermission(){
         return "no_permission";
+    }
+
+    @GetMapping(value = "/error")
+    public String error(){
+        return "login";
     }
 
     @GetMapping(value = "/logout")
     public String logout(){
         return "login";
     }
-
 
 }

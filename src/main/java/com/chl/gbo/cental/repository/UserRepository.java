@@ -16,7 +16,6 @@ import com.chl.gbo.cental.domain.User;
  */
 public interface UserRepository extends JpaRepository<User, Integer> ,JpaSpecificationExecutor<User> {
 
-    @Query(value = "select a.*,null as roleNames,null as roleIds from tb_user a where a.loginAccount=?1", nativeQuery = true)
     List<User> findByLoginAccount(String loginAccount);
 
     /**
@@ -26,8 +25,8 @@ public interface UserRepository extends JpaRepository<User, Integer> ,JpaSpecifi
     @Query(value = "SELECT t.userId,t.loginAccount,t.loginPass,t.userName,t.userHead,t.userPhone,t.userEmail,t.userSex," +
             "t.userBirthday,t.registerTime,t.departmentKey,GROUP_CONCAT(t.roleKey) AS roleNames,GROUP_CONCAT(t.roleId) AS roleIds " +
             "FROM (SELECT a.*,c.roleKey, c.roleId  FROM tb_user a LEFT JOIN tb_user_role b ON a.userId = b.userId " +
-            "LEFT JOIN tb_role c ON b.roleId = c.roleId ) AS t GROUP BY loginAccount,loginPass", nativeQuery = true)
-    List<User> findAllUsersAndAuthority();
+            "LEFT JOIN tb_role c ON b.roleId = c.roleId ) AS t  WHERE IF(?1!='' , t.loginAccount LIKE ?1, 1=1) GROUP BY loginAccount,loginPass", nativeQuery = true)
+    List<User> findAllUsersAndAuthority(String loginAccount);
 
     @Modifying
     @Query(value = "delete from tb_user_role where userId =?1", nativeQuery = true)
