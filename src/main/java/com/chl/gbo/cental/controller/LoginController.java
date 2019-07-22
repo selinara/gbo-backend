@@ -1,13 +1,18 @@
 package com.chl.gbo.cental.controller;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.Iterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.chl.gbo.cental.service.AuthorityService;
 
 /**
  * @Auther: BoYanG
@@ -17,6 +22,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class LoginController {
 
     private static final Log  logger = LogFactory.getLog(LoginController.class);
+
+    @Autowired
+    private AuthorityService authorityService;
 
     @GetMapping(value = "/login")
     public String login(){
@@ -34,6 +42,7 @@ public class LoginController {
     public String index(Model model,Authentication authentication){
         logger.info(authentication.getName()+" has login backend!!!!");
         model.addAttribute("currentUser", authentication.getName());
+        model.addAttribute("authoritys", authorityService.getMenusByUserAuthor(authentication));
         return "index";
     }
 

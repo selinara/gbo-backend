@@ -29,6 +29,7 @@ public class Authority {
     private String menuClass;
     private String menuCode;
     private String menuName;
+    private String icon;
     private String parentMenucode;
     private Integer sequence;
     private String menuType;

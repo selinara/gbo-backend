@@ -141,11 +141,12 @@ public class SystemController {
     }
 
     @GetMapping("/auth/edit")
-    public String authRole(String id,String code , String name, String pcode, String seq, String url,String type, Model model){
+    public String authRole(String id,String code , String name, String pcode, String seq, String url,String type,String icon,Model model){
         model.addAttribute("urlArr", authorityService.getConcatMenuCode(code));
         model.addAttribute("id", id);
         model.addAttribute("code", code);
         model.addAttribute("name", name);
+        model.addAttribute("icon", icon);
         model.addAttribute("pcode", pcode);
         model.addAttribute("seq", seq);
         model.addAttribute("url", url);

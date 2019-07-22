@@ -22,7 +22,7 @@
 
         jQuery.validator.addMethod("isExist", function(value, element){
                 var urlArr = $('#urlArr').val();
-                return urlArr.indexOf(value+',') == -1;
+                return urlArr.indexOf(','+value+',') == -1;
             },"此页面编码已存在，请更换");
 
         //以下为官方示例
@@ -138,10 +138,10 @@
                     menuType: {
                         required: true,
                     },
-                    dataUrl: {
-                        required: true,
-                        minlength: 2
-                    },
+                    // dataUrl: {
+                    //     required: true,
+                    //     minlength: 2
+                    // },
                 },
                 messages: {
                     menuCode: {
@@ -155,10 +155,10 @@
                     menuType: {
                         required: icon + "请选择页面级别",
                     },
-                    dataUrl: {
-                        required: icon + "请输入页面路径",
-                        minlength: icon + "URL必须2个字符以上"
-                    }
+                    // dataUrl: {
+                    //     required: icon + "请输入页面路径",
+                    //     minlength: icon + "URL必须2个字符以上"
+                    // }
                 }
             });
         });

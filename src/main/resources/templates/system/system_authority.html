@@ -14,6 +14,7 @@
                             <th>菜单编码</th>
                             <th>菜单名称</th>
                             <th>菜单路径</th>
+                            <th>菜单图标</th>
                             <th>父级编码</th>
                             <th>菜单排序</th>
                             <th>菜单类型</th>
@@ -25,11 +26,12 @@
                             <td th:text="${auth.menuCode}"></td>
                             <td th:text="${auth.menuName}"></td>
                             <td th:text="${auth.dataUrl}"></td>
+                            <td th:text="${auth.icon}"></td>
                             <td th:text="${auth.parentMenucode}"></td>
                             <td th:text="${auth.sequence}"></td>
                             <td th:text="${auth.menuType=='1'?'导航菜单':'按钮菜单'}"></td>
                             <td>
-                                <a class="close-link" th:href="@{/system/auth/edit(type=${auth.menuType},id=${auth.id},code=${auth.menuCode},name=${auth.menuName},url=${auth.dataUrl},pcode=${auth.parentMenucode},seq=${auth.sequence})}">
+                                <a class="close-link" th:href="@{/system/auth/edit(type=${auth.menuType},id=${auth.id},code=${auth.menuCode},name=${auth.menuName},url=${auth.dataUrl},pcode=${auth.parentMenucode},seq=${auth.sequence},icon=${auth.icon})}">
                                     <i class="fa fa-wrench"></i>
                                 </a>
                                 <a class="close-link" th:onclick="'javascript:delauth(\''+${auth.id}+'\')'">
